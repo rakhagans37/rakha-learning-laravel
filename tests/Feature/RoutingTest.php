@@ -24,4 +24,17 @@ class RoutingTest extends TestCase
     {
         $this->get('/notfound')->assertSeeText('Halaman tidak ditemukan');
     }
+
+    public function testRouteParameter()
+    {
+        $this->get('/blog/1')->assertStatus(200)->assertSeeText('Ini adalah blog 1');
+        $this->get('/categories/100')->assertStatus(200)->assertSeeText('Category Id adalah : 100');
+        $this->get('/user/Rakha')->assertStatus(200)->assertSeeText('Welcome to my traveloka, Rakha');
+        $this->get('/redirectUser/Rakha')->assertRedirect('/user/Rakha');
+    }
+
+    public function testRouterController()
+    {
+        $this->get('/hello/Rakha')->assertStatus(200)->assertSeeText('Halo, Rakha');
+    }
 }
