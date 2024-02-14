@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HelloController;
+use App\Http\Controllers\InputController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,3 +96,10 @@ Route::get('/redirectUser/{name}', function ($name = "User") {
 Route::get('/hello/{name}', [HelloController::class, 'hello']); // Registrasi controller kedalam route menggunakan method get() atau post() pada file web.php
 
 Route::get('/getRequest/request', [HelloController::class, 'request']); // Registrasi controller kedalam route menggunakan method get() atau post() pada file web.php
+
+Route::get('/input/hello', [InputController::class, 'hello']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/input/hello', [InputController::class, 'hello']); // Registrasi controller kedalam route menggunakan method post() pada file web.php
+Route::post('/input/helloArray', [InputController::class, 'helloArray']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/input/getAllInput', [InputController::class, 'getAllInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/input/getAllName', [InputController::class, 'getAllName']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/input/getDataType', [InputController::class, 'getDataType']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
