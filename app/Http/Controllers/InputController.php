@@ -27,6 +27,18 @@ Melakukan konversi tipe data pada input
     3. $request->json() -> untuk mengambil input dan mengubahnya menjadi tipe data json
 */
 
+/*
+Melakukan filter pada input
+    1. $request->only(['name', 'age']) -> untuk mengambil input yang hanya diinginkan
+    2. $request->except(['name', 'age']) -> untuk mengambil input yang tidak diinginkan
+*/
+
+/*
+Melakukan merge pada input => untuk menambahkan default value pada input ketika input tersebut tidak ada
+    1. merge() -> untuk menggabungkan input yang ada
+    2. mergeIfMissing() -> untuk menggabungkan input yang ada dan menambahkan default value pada input yang tidak ada 
+*/
+
 class InputController extends Controller
 {
     public function hello(Request $request): string
@@ -60,5 +72,22 @@ class InputController extends Controller
             'birth_date' => $date->format('d-m-Y'),
             'married' => $boolean
         ]);
+    }
+
+    public function getFilterInput(Request $request)
+    {
+        $only = $request->only(['name', "address.city"]);
+        $except = $request->except(['age']);
+
+        return [
+            'only' => $only,
+            'except' => $except
+        ];
+    }
+
+    public function getMergeInput(Request $request)
+    {
+        $request->merge(['admin' => false]);
+        return $request->input();
     }
 }

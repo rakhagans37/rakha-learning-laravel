@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
+use App\Http\Controllers\StorageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -103,3 +104,11 @@ Route::post('/input/helloArray', [InputController::class, 'helloArray']); // Reg
 Route::post('/input/getAllInput', [InputController::class, 'getAllInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::post('/input/getAllName', [InputController::class, 'getAllName']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::post('/input/getDataType', [InputController::class, 'getDataType']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/input/getFilter', [InputController::class, 'getFilterInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/input/getMerge', [InputController::class, 'getMergeInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/file/getStorage', [StorageController::class, 'getStorage']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::post('/file/fileUpload', [StorageController::class, 'fileUpload']); // Registrasi controller kedalam route menggunakan method post() pada file web.php
+
+Route::get('/phpinfo', function () {
+    return phpinfo();
+});

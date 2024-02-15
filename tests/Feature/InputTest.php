@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Psy\Readline\Hoa\Console;
 use Tests\TestCase;
 
 class InputTest extends TestCase
@@ -54,5 +57,28 @@ class InputTest extends TestCase
         $this->post('/input/getDataType', ['birth_date' => '03-07-2004', 'married' => 'true'])
             ->assertStatus(200)
             ->assertSeeText('03-07-2004')->assertSeeText('true');
+    }
+
+    public function testFilterInput()
+    {
+        $this->post('/input/getFilter', ['name' => 'Rakha', 'age' => 20, 'address' => ['city' => 'Jakarta', 'province' => 'DKI Jakarta']])
+            ->assertStatus(200)
+            ->assertSeeText('Rakha')->assertDontSeeText('20')->assertSeeText('Jakarta');
+    }
+
+    public function testMergeInput()
+    {
+        $this->post('/input/getMerge', ['name' => 'Rakha', 'age' => 20, 'admin' => true])
+            ->assertStatus(200)
+            ->assertSeeText('Rakha')->assertSeeText('20')->assertSeeText('false')->assertDontSeeText('true');
+    }
+
+    public function testUpload()
+    {
+        $image = UploadedFile::fake()->image('Awikwok.png');
+
+        $this->post('/file/fileUpload', [
+            'image' => $image
+        ])->assertSeeText('File uploaded Awikwok.png');
     }
 }
