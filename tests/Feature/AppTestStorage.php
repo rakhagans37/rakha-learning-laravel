@@ -54,10 +54,10 @@ class AppTestStorage extends TestCase
 
     public function testUpload()
     {
-        $image = UploadedFile::fake()->image('avatar.jpg');
+        $image = UploadedFile::fake()->image('Awikwok.png');
 
-        $this->post('/file/upload', [
+        $this->post('/file/fileUpload', [
             'image' => $image
-        ])->assertStatus(200);
+        ])->assertSeeText('File uploaded Awikwok.png');
     }
 }

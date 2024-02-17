@@ -72,13 +72,4 @@ class InputTest extends TestCase
             ->assertStatus(200)
             ->assertSeeText('Rakha')->assertSeeText('20')->assertSeeText('false')->assertDontSeeText('true');
     }
-
-    public function testUpload()
-    {
-        $image = UploadedFile::fake()->image('Awikwok.png');
-
-        $this->post('/file/fileUpload', [
-            'image' => $image
-        ])->assertSeeText('File uploaded Awikwok.png');
-    }
 }

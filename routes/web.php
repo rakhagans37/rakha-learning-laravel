@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
+use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\StorageController;
 use Illuminate\Support\Facades\Route;
 
@@ -108,6 +109,12 @@ Route::post('/input/getFilter', [InputController::class, 'getFilterInput']); // 
 Route::post('/input/getMerge', [InputController::class, 'getMergeInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::get('/file/getStorage', [StorageController::class, 'getStorage']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::post('/file/fileUpload', [StorageController::class, 'fileUpload']); // Registrasi controller kedalam route menggunakan method post() pada file web.php
+Route::get('/response/helloResponse', [ResponseController::class, 'helloResponse']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/response/responseHeader', [ResponseController::class, 'responseHeader']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/response/responseView', [ResponseController::class, 'responseView']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/response/responseJson', [ResponseController::class, 'responseJson']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/response/responseFile', [ResponseController::class, 'responseFile']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/response/responseDownload', [ResponseController::class, 'responseDownload']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 
 Route::get('/phpinfo', function () {
     return phpinfo();
