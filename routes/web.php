@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CookieController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\ResponseController;
@@ -115,6 +116,9 @@ Route::get('/response/responseView', [ResponseController::class, 'responseView']
 Route::get('/response/responseJson', [ResponseController::class, 'responseJson']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::get('/response/responseFile', [ResponseController::class, 'responseFile']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::get('/response/responseDownload', [ResponseController::class, 'responseDownload']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
+Route::get('/cookie/createCookie', [CookieController::class, 'createCookie']);
+Route::get('/cookie/getCookie', [CookieController::class, 'getCookie']);
+Route::get('/cookie/deleteCookie', [CookieController::class, 'deleteCookie']);
 
 Route::get('/phpinfo', function () {
     return phpinfo();

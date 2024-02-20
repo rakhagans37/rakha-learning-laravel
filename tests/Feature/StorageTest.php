@@ -32,7 +32,7 @@ Method yang bisa digunakan pada storage
     7. move() -> untuk memindahkan file
 */
 
-class AppTestStorage extends TestCase
+class StorageTest extends TestCase
 {
     public function testStorage()
     {
@@ -54,10 +54,10 @@ class AppTestStorage extends TestCase
 
     public function testUpload()
     {
-        $image = UploadedFile::fake()->image('Awikwok.png');
+        $image = UploadedFile::fake()->image('Test.png');
 
         $this->post('/file/fileUpload', [
             'image' => $image
-        ])->assertSeeText('File uploaded Awikwok.png');
+        ])->assertSeeText('File uploaded Test.png');
     }
 }
