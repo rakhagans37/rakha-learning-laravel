@@ -3,8 +3,10 @@
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
+use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\StorageController;
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,7 +83,7 @@ Route::get('/categories/{categoryId}', function ($categoryId) {
 //Route Parameter with optional parameter => harus ditambahkan default value nya
 Route::get('/user/{name?}', function ($name = "User") {
     return "Welcome to my traveloka, " . $name;
-})->where('name', '[a-zA-Z]+')->name('user'); // Hanya menerima parameter name yang berupa huruf
+})->where('name', '[a-zA-Z]+')->name('userDetails'); // Hanya menerima parameter name yang berupa huruf
 
 //Conflict pada routing
 Route::get('/user/Rakha', function () {
@@ -93,7 +95,7 @@ Route::get('/user/Rakha', function () {
 // Keuntungan menggunakan name adalah jika kita ingin mengganti routing, kita tidak perlu mengganti semua routing yang memanggil routing tersebut
 
 Route::get('/redirectUser/{name}', function ($name = "User") {
-    return redirect()->route('user', ['name' => $name]);
+    return redirect()->route('userDetails', ['name' => $name]);
 });
 
 Route::get('/hello/{name}', [HelloController::class, 'hello']); // Registrasi controller kedalam route menggunakan method get() atau post() pada file web.php
@@ -109,7 +111,6 @@ Route::post('/input/getDataType', [InputController::class, 'getDataType']); // R
 Route::post('/input/getFilter', [InputController::class, 'getFilterInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::post('/input/getMerge', [InputController::class, 'getMergeInput']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::get('/file/getStorage', [StorageController::class, 'getStorage']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
-Route::post('/file/fileUpload', [StorageController::class, 'fileUpload']); // Registrasi controller kedalam route menggunakan method post() pada file web.php
 Route::get('/response/helloResponse', [ResponseController::class, 'helloResponse']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::get('/response/responseHeader', [ResponseController::class, 'responseHeader']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
 Route::get('/response/responseView', [ResponseController::class, 'responseView']); // Registrasi controller kedalam route menggunakan method get() pada file web.php
@@ -119,7 +120,26 @@ Route::get('/response/responseDownload', [ResponseController::class, 'responseDo
 Route::get('/cookie/createCookie', [CookieController::class, 'createCookie']);
 Route::get('/cookie/getCookie', [CookieController::class, 'getCookie']);
 Route::get('/cookie/deleteCookie', [CookieController::class, 'deleteCookie']);
+Route::get('/redirect/to', [RedirectController::class, 'redirectTo']);
+Route::get('/redirect/from', [RedirectController::class, 'redirectFrom']);
+Route::get('/redirect/user', [RedirectController::class, 'redirectUser']);
+Route::get('/redirect/action', [RedirectController::class, 'redirectAction']);
+Route::get('/redirect/hello/{name}', [RedirectController::class, 'redirectHello']);
+Route::get('/redirect/external', [RedirectController::class, 'redirectToExternal']);
 
+Route::get('/middleware', function () {
+    return "Middleware";
+})->middleware('contoh'); // Registrasi middleware di route
+
+Route::get('/middleware/group', function () {
+    return "Middleware";
+})->middleware(['contohGroup']); // Registrasi middleware di route
+
+Route::get('/middleware/parameter', function () {
+    return "Middleware";
+})->middleware('contohParameter:Rakhaware37,401'); // Registrasi middleware di route dengan parameter
+
+Route::post('/file/fileUpload', [StorageController::class, 'fileUpload'])->withoutMiddleware([VerifyCsrfToken::class]); //Exclude Middleware
 Route::get('/phpinfo', function () {
     return phpinfo();
 });

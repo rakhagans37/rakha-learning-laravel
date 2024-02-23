@@ -18,6 +18,7 @@ Cara menghapus cookie:
     1. Menggunakan method helper cookie()->forget()
     2. Dengan membuat cookie dengan nama sama, namun dengan waktu yang sudah lewat
     3. Dengan method response withCookie()
+    
 Ketika create Cookie -> maka akan mengembalikan response dengan cookie yang telah di buat
 Ketika get Cookie -> maka request akan membuat request header untuk cookie dan di oper ke response 
 ketika tersedia
