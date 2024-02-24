@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CookieController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\RedirectController;
@@ -138,6 +139,9 @@ Route::get('/middleware/group', function () {
 Route::get('/middleware/parameter', function () {
     return "Middleware";
 })->middleware('contohParameter:Rakhaware37,401'); // Registrasi middleware di route dengan parameter
+
+Route::get('/form', [FormController::class, 'form']);
+Route::post('/form', [FormController::class, 'submitForm']);
 
 Route::post('/file/fileUpload', [StorageController::class, 'fileUpload'])->withoutMiddleware([VerifyCsrfToken::class]); //Exclude Middleware
 Route::get('/phpinfo', function () {

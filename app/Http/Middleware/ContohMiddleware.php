@@ -47,14 +47,4 @@ class ContohMiddleware
             return response()->json("Access Denied", 401);
         }
     }
-
-    public function handleWithParameter(Request $request, Closure $next, string $key, string $status)
-    {
-        $apiKey = $request->header('X-API-KEY');
-        if (($apiKey ?? "Rakhaware37") == $key) {
-            return $next($request);
-        } else {
-            return response()->json("Access Denied", ($status ?? 401));
-        }
-    }
 }
