@@ -4,11 +4,15 @@ use App\Http\Controllers\CookieController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
+use App\Http\Controllers\MiddlewareController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StorageController;
 use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,12 +125,6 @@ Route::get('/response/responseDownload', [ResponseController::class, 'responseDo
 Route::get('/cookie/createCookie', [CookieController::class, 'createCookie']);
 Route::get('/cookie/getCookie', [CookieController::class, 'getCookie']);
 Route::get('/cookie/deleteCookie', [CookieController::class, 'deleteCookie']);
-Route::get('/redirect/to', [RedirectController::class, 'redirectTo']);
-Route::get('/redirect/from', [RedirectController::class, 'redirectFrom']);
-Route::get('/redirect/user', [RedirectController::class, 'redirectUser']);
-Route::get('/redirect/action', [RedirectController::class, 'redirectAction']);
-Route::get('/redirect/hello/{name}', [RedirectController::class, 'redirectHello']);
-Route::get('/redirect/external', [RedirectController::class, 'redirectToExternal']);
 
 Route::get('/middleware', function () {
     return "Middleware";
@@ -146,4 +144,85 @@ Route::post('/form', [FormController::class, 'submitForm']);
 Route::post('/file/fileUpload', [StorageController::class, 'fileUpload'])->withoutMiddleware([VerifyCsrfToken::class]); //Exclude Middleware
 Route::get('/phpinfo', function () {
     return phpinfo();
+});
+
+/*
+Route Group
+
+Route Prefix => digunakan untuk memberikan prefix (awalan) pada route, ini berguna ketika ingin membuat route dengan URL yang awalannya hampir sama
+
+dibanding menulis route satu persatu, kita bisa menggunakan route group untuk mengelompokkan route yang memiliki prefix yang sama
+
+Route::get('/redirect/to', [RedirectController::class, 'redirectTo']);
+Route::get('/redirect/from', [RedirectController::class, 'redirectFrom']);
+Route::get('/redirect/user', [RedirectController::class, 'redirectUser']);
+Route::get('/redirect/action', [RedirectController::class, 'redirectAction']);
+Route::get('/redirect/hello/{name}', [RedirectController::class, 'redirectHello']);
+Route::get('/redirect/external', [RedirectController::class, 'redirectToExternal']);
+
+menjadi seperti dbawah ini:
+
+
+== Route MiddleWare ==
+Digunakan untuk memberikan middleware pada route group didalam group middleware tsb.
+
+== Route Controller ==
+Digunakan untuk memberikan controller pada route group didalam group controller tsb.
+*/
+
+Route::prefix('/redirect')->group(function () {
+    Route::get('/to', [RedirectController::class, 'redirectTo']);
+    Route::get('/from', [RedirectController::class, 'redirectFrom']);
+    Route::get('/user', [RedirectController::class, 'redirectUser']);
+    Route::get('/action', [RedirectController::class, 'redirectAction']);
+    Route::get('/hello/{name}', [RedirectController::class, 'redirectHello']);
+    Route::get('/external', [RedirectController::class, 'redirectToExternal']);
+});
+
+Route::middleware(['contohParameter:Rakhaware37,401'])->group(function () {
+    Route::get('/middleware/group1', function () {
+        return "Tes";
+    });
+    Route::get('/middleware/group2', function () {
+        return "Middleware";
+    });
+    Route::get('/middleware/group3', function () {
+        return "Middleware";
+    });
+});
+
+Route::controller(ResponseController::class)->group(
+    function () {
+        Route::get('/response/helloResponse', 'helloResponse');
+        Route::get('/response/responseHeader', 'responseHeader');
+        Route::get('/response/responseView', 'responseView');
+        Route::get('/response/responseJson', 'responseJson');
+        Route::get('/response/responseFile', 'responseFile');
+        Route::get('/response/responseDownload', 'responseDownload');
+    }
+);
+
+/*
+Get current menggunakan facades URL = $url = url()->current() / url()->full;
+
+Get Named Route menggunakan facades URL = $url = url()->route('routeName', ['parameter' => 'value']) / url()->route('routeName', ['parameter' => 'value'], false);
+
+Get URL of Controller Action menggunakan facades URL = $url = url()->action('Controller@action', ['parameter' => 'value']) / url()->action('Controller@action', ['parameter' => 'value'], false);
+*/
+Route::get('/currentUrl', function () {
+    return URL::full();
+});
+
+Route::get('/namedUrl', function () {
+    return URL::route('blog', ['blogId' => 1]);
+});
+
+Route::get('/controllerAction', function () {
+    return action([FormController::class, 'form']);
+});
+
+Route::get('/session/putSession', [SessionController::class, 'putSession']);
+Route::get('/session/getSession', [SessionController::class, 'getSession']);
+Route::get('/error/sample', function () {
+    throw new Exception("Error Sample");
 });
